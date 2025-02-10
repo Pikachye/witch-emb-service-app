@@ -49,12 +49,12 @@ fs.readdir(imageFolder, (err, files) => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Галерея работ</title>
+    <title>Галерея выполненных работ</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>Галерея работ студии машинной вышивки</h1>
+        <h1>Галерея выполненных работ</h1>
     </header>
     <main>
         <div id="gallery" class="gallery">
@@ -62,7 +62,7 @@ fs.readdir(imageFolder, (err, files) => {
         </div>
     </main>
     <footer>
-        <p>&copy; 2023 Студия машинной вышивки</p>
+        <p>&copy; 2025 Ведьмина служба вышивки</p>
     </footer>
     <script src="script.js?v=${timestamp}"></script>
 </body>
