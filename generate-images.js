@@ -13,6 +13,9 @@ fs.readdir(imageFolder, (err, files) => {
     // Фильтруем только изображения
     const images = files.filter(file => /\.(jpg|jpeg|png|gif)$/i.test(file));
 
+    // Генерируем временную метку
+    const timestamp = Date.now(); // Текущее время в миллисекундах
+
     // Генерируем JavaScript-код
     const jsCode = `
         const images = ${JSON.stringify(images)};
@@ -22,7 +25,7 @@ fs.readdir(imageFolder, (err, files) => {
             gallery.innerHTML = ""; // Очищаем галерею
             images.forEach(image => {
                 const img = document.createElement("img");
-                img.src = imageFolder + image;
+                img.src = imageFolder + image + "?v=${timestamp}"; // Добавляем временную метку
                 img.alt = image;
                 gallery.appendChild(img);
             });

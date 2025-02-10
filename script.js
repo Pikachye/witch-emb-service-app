@@ -6,7 +6,7 @@
             gallery.innerHTML = ""; // Очищаем галерею
             images.forEach(image => {
                 const img = document.createElement("img");
-                img.src = imageFolder + image;
+                img.src = imageFolder + image + "?v=1739228247316"; // Добавляем временную метку
                 img.alt = image;
                 gallery.appendChild(img);
             });
