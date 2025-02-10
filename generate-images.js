@@ -10,28 +10,23 @@ fs.readdir(imageFolder, (err, files) => {
         return;
     }
 
-    // Фильтруем только изображения (поддерживаемые форматы: jpg, jpeg, png, gif)
+    // Фильтруем только изображения
     const images = files.filter(file => /\.(jpg|jpeg|png|gif)$/i.test(file));
 
     // Генерируем JavaScript-код
     const jsCode = `
-        // Автоматически сгенерированный массив изображений
         const images = ${JSON.stringify(images)};
-
-        // Функция для загрузки изображений
         function loadImages() {
             const imageFolder = "images/";
             const gallery = document.getElementById("gallery");
-
+            gallery.innerHTML = ""; // Очищаем галерею
             images.forEach(image => {
                 const img = document.createElement("img");
-                img.src = imageFolder + image; // Указываем путь к изображению
-                img.alt = image; // Альтернативный текст
-                gallery.appendChild(img); // Добавляем изображение в галерею
+                img.src = imageFolder + image;
+                img.alt = image;
+                gallery.appendChild(img);
             });
         }
-
-        // Загружаем изображения при загрузке страницы
         window.onload = loadImages;
     `;
 

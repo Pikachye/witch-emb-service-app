@@ -1,20 +1,15 @@
 
-        // Автоматически сгенерированный массив изображений
-        const images = ["20241222_154239.jpg","20250114_230828.jpg","20250128_224132.jpg","20250205_215602 (1).jpg","IMG_20250209_211244_777.jpg"];
-
-        // Функция для загрузки изображений
+        const images = ["20241116_152237.jpg","20241222_154239.jpg","20250114_230828.jpg","20250128_224132.jpg","20250205_215602 (1).jpg","IMG_20250209_211244_777.jpg"];
         function loadImages() {
             const imageFolder = "images/";
             const gallery = document.getElementById("gallery");
-
+            gallery.innerHTML = ""; // Очищаем галерею
             images.forEach(image => {
                 const img = document.createElement("img");
-                img.src = imageFolder + image; // Указываем путь к изображению
-                img.alt = image; // Альтернативный текст
-                gallery.appendChild(img); // Добавляем изображение в галерею
+                img.src = imageFolder + image;
+                img.alt = image;
+                gallery.appendChild(img);
             });
         }
-
-        // Загружаем изображения при загрузке страницы
         window.onload = loadImages;
     
