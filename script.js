@@ -6,7 +6,7 @@
             gallery.innerHTML = ""; // Очищаем галерею
             images.forEach(image => {
                 const img = document.createElement("img");
-                img.src = imageFolder + image + "?v=1739229017261";
+                img.src = imageFolder + image + "?v=1739229189935";
                 img.alt = image;
                 gallery.appendChild(img);
             });
