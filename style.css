@@ -15,7 +15,8 @@
     margin: auto;
     display: block;
     max-width: 90%; /* Максимальная ширина */
-    max-height: 90%; /* Максимальная высота */
+    max-height: 80vh; /* Максимальная высота (80% от высоты экрана) */
+    object-fit: contain; /* Сохраняем пропорции изображения */
 }
 
 .close {

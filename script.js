@@ -1,5 +1,5 @@
 
-        const images = ["20241222_154239.jpg","20250114_230828.jpg"];
+        const images = ["20241116_152237.jpg","20241222_154239.jpg"];
         function loadImages() {
             const imageFolder = "images/";
             const gallery = document.getElementById("gallery");
