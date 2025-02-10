@@ -13,9 +13,6 @@ fs.readdir(imageFolder, (err, files) => {
     // Фильтруем только изображения
     const images = files.filter(file => /\.(jpg|jpeg|png|gif)$/i.test(file));
 
-    // Генерируем временную метку
-    const timestamp = Date.now();
-
     // Генерируем JavaScript-код
     const jsCode = `
         const images = ${JSON.stringify(images)};
@@ -23,13 +20,46 @@ fs.readdir(imageFolder, (err, files) => {
             const imageFolder = "images/";
             const gallery = document.getElementById("gallery");
             gallery.innerHTML = ""; // Очищаем галерею
+
             images.forEach(image => {
                 const img = document.createElement("img");
-                img.src = imageFolder + image + "?v=${timestamp}";
+                img.src = imageFolder + image;
                 img.alt = image;
+                img.classList.add("gallery-image"); // Добавляем класс для стилей
+
+                // Добавляем обработчик клика для открытия модального окна
+                img.addEventListener("click", () => openModal(imageFolder + image));
+
                 gallery.appendChild(img);
             });
         }
+
+        // Функция для открытия модального окна
+        function openModal(imageSrc) {
+            const modal = document.getElementById("modal");
+            const modalImage = document.getElementById("modal-image");
+
+            modal.style.display = "block"; // Показываем модальное окно
+            modalImage.src = imageSrc; // Устанавливаем источник изображения
+
+            // Закрытие модального окна при нажатии на крестик
+            const closeBtn = document.querySelector(".close");
+            closeBtn.onclick = () => closeModal();
+
+            // Закрытие модального окна при клике вне изображения
+            modal.onclick = (event) => {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            };
+        }
+
+        // Функция для закрытия модального окна
+        function closeModal() {
+            const modal = document.getElementById("modal");
+            modal.style.display = "none"; // Скрываем модальное окно
+        }
+
         window.onload = loadImages;
     `;
 
@@ -39,42 +69,6 @@ fs.readdir(imageFolder, (err, files) => {
             console.error("Ошибка записи файла:", err);
         } else {
             console.log("Файл script.js успешно создан!");
-        }
-    });
-
-    // Обновляем index.html с временной меткой
-    const htmlContent = `
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Галерея выполненных работ</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <h1>Галерея выполненных работ</h1>
-    </header>
-    <main>
-        <div id="gallery" class="gallery">
-            <!-- Изображения будут загружаться сюда -->
-        </div>
-    </main>
-    <footer>
-        <p>&copy; 2025 Ведьмина служба вышивки</p>
-    </footer>
-    <script src="script.js?v=${timestamp}"></script>
-</body>
-</html>
-`;
-
-    // Сохраняем HTML-код в файл index.html
-    fs.writeFile("index.html", htmlContent, err => {
-        if (err) {
-            console.error("Ошибка записи файла index.html:", err);
-        } else {
-            console.log("Файл index.html успешно обновлен!");
         }
     });
 });
