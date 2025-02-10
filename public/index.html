@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Галерея вышивок</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -24,30 +23,10 @@
   </style>
 </head>
 <body>
-  <h1>Галерея вышивок</h1>
-  <div class="gallery" id="gallery"></div>
-
-  <script>
-    // Инициализация Telegram Web App
-    const tg = window.Telegram.WebApp;
-
-    // Загрузка данных из API
-    fetch('http://localhost:3000/api/gallery')
-      .then(response => response.json())
-      .then(data => {
-        const galleryDiv = document.getElementById('gallery');
-        data.forEach(item => {
-          const img = document.createElement('img');
-          img.src = item.image_url;
-          img.alt = item.title;
-          galleryDiv.appendChild(img);
-        });
-      });
-
-    // Кнопка закрытия
-    tg.MainButton.setText('Закрыть').onClick(() => {
-      tg.close();
-    });
-  </script>
+  <h1>Добро пожаловать в галерею вышивок!</h1>
+  <div class="gallery">
+    <img src="/image1.jpg" alt="Вышивка 1">
+    <img src="/image2.jpg" alt="Вышивка 2">
+  </div>
 </body>
 </html>

@@ -1,19 +1,18 @@
 const express = require('express');
+const path = require('path');
+
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
-// Пример данных (галерея вышивок)
-const gallery = [
-  { id: 1, title: 'Вышивка 1', description: 'Описание 1', image_url: 'https://example.com/image1.jpg', category: 'Пейзаж' },
-  { id: 2, title: 'Вышивка 2', description: 'Описание 2', image_url: 'https://example.com/image2.jpg', category: 'Портрет' }
-];
+// Отдача статических файлов из папки public
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Получение всех вышивок
-app.get('/api/gallery', (req, res) => {
-  res.json(gallery);
+// Маршрут для корневого пути
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Запуск сервера
 app.listen(port, () => {
-  console.log(`Сервер запущен на http://localhost:${port}`);
+  console.log(`Сервер запущен на порту ${port}`);
 });
