@@ -6,14 +6,14 @@
 }
 
 .clickable-image {
-    width: 150px;
-    height: auto;
+    width: 150px; /* Фиксированная ширина */
+    height: auto; /* Сохранение пропорций */
     cursor: pointer;
     transition: transform 0.3s ease;
 }
 
 .clickable-image:hover {
-    transform: scale(1.1);
+    transform: scale(1.1); /* Эффект увеличения при наведении */
 }
 
 /* Стиль для модального окна */
