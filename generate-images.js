@@ -11,6 +11,7 @@ fs.readdir(imageFolder, (err, files) => {
     const images = files.filter(file => /\.(jpg|jpeg|png|gif)$/i.test(file));
     // Генерируем временную метку
     const timestamp = Date.now();
+
     // Генерируем JavaScript-код
     const jsCode = `
         const images = ${JSON.stringify(images)};
@@ -18,12 +19,31 @@ fs.readdir(imageFolder, (err, files) => {
             const imageFolder = "images/";
             const gallery = document.getElementById("gallery");
             gallery.innerHTML = ""; // Очищаем галерею
+
             images.forEach(image => {
                 const img = document.createElement("img");
-                img.src = imageFolder + image + "?v=${timestamp}";
                 img.alt = image;
-                img.classList.add("clickable-image"); // Добавляем класс для кликабельности
+                img.classList.add("clickable-image");
+                img.style.width = "150px"; // Ограничение размера
+                img.style.height = "auto";
+
+                // Асинхронная загрузка
+                img.dataset.src = imageFolder + image + "?v=${timestamp}"; // Сохраняем путь
+                img.onload = () => img.src = img.dataset.src; // Загружаем изображение
+                img.src = ""; // Начинаем с пустого src
+
                 gallery.appendChild(img);
+
+                // Ленивая загрузка
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            img.src = img.dataset.src; // Загружаем, когда изображение видно
+                            observer.unobserve(img);
+                        }
+                    });
+                });
+                observer.observe(img);
             });
 
             // Логика модального окна
@@ -34,7 +54,7 @@ fs.readdir(imageFolder, (err, files) => {
             document.querySelectorAll(".clickable-image").forEach(img => {
                 img.addEventListener("click", () => {
                     modal.style.display = "block";
-                    modalImg.src = img.src;
+                    modalImg.src = img.dataset.src; // Загружаем полное изображение
                 });
             });
 
@@ -50,6 +70,7 @@ fs.readdir(imageFolder, (err, files) => {
         }
         window.onload = loadImages;
     `;
+
     // Сохраняем JavaScript-код в файл script.js
     fs.writeFile("script.js", jsCode, err => {
         if (err) {
@@ -58,6 +79,7 @@ fs.readdir(imageFolder, (err, files) => {
             console.log("Файл script.js успешно создан!");
         }
     });
+
     // Обновляем index.html с временной меткой
     const htmlContent = `
 <!DOCTYPE html>
