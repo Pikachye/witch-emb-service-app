@@ -1,21 +1,16 @@
 const fs = require("fs");
-
 // Путь к папке с изображениями
 const imageFolder = "images/";
-
 // Получаем список файлов в папке
 fs.readdir(imageFolder, (err, files) => {
     if (err) {
         console.error("Ошибка чтения папки:", err);
         return;
     }
-
     // Фильтруем только изображения
     const images = files.filter(file => /\.(jpg|jpeg|png|gif)$/i.test(file));
-
     // Генерируем временную метку
     const timestamp = Date.now();
-
     // Генерируем JavaScript-код
     const jsCode = `
         const images = ${JSON.stringify(images)};
@@ -27,12 +22,34 @@ fs.readdir(imageFolder, (err, files) => {
                 const img = document.createElement("img");
                 img.src = imageFolder + image + "?v=${timestamp}";
                 img.alt = image;
+                img.classList.add("clickable-image"); // Добавляем класс для кликабельности
                 gallery.appendChild(img);
+            });
+
+            // Логика модального окна
+            const modal = document.getElementById("modal");
+            const modalImg = document.getElementById("modal-image");
+            const closeBtn = document.querySelector(".close");
+
+            document.querySelectorAll(".clickable-image").forEach(img => {
+                img.addEventListener("click", () => {
+                    modal.style.display = "block";
+                    modalImg.src = img.src;
+                });
+            });
+
+            closeBtn.addEventListener("click", () => {
+                modal.style.display = "none";
+            });
+
+            window.addEventListener("click", (event) => {
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
             });
         }
         window.onload = loadImages;
     `;
-
     // Сохраняем JavaScript-код в файл script.js
     fs.writeFile("script.js", jsCode, err => {
         if (err) {
@@ -41,7 +58,6 @@ fs.readdir(imageFolder, (err, files) => {
             console.log("Файл script.js успешно создан!");
         }
     });
-
     // Обновляем index.html с временной меткой
     const htmlContent = `
 <!DOCTYPE html>
@@ -60,6 +76,12 @@ fs.readdir(imageFolder, (err, files) => {
         <div id="gallery" class="gallery">
             <!-- Изображения будут загружаться сюда -->
         </div>
+
+        <!-- Модальное окно -->
+        <div id="modal" class="modal">
+            <span class="close">&times;</span>
+            <img class="modal-content" id="modal-image">
+        </div>
     </main>
     <footer>
         <p>&copy; 2025 Ведьмина служба вышивки</p>
@@ -68,7 +90,6 @@ fs.readdir(imageFolder, (err, files) => {
 </body>
 </html>
 `;
-
     // Сохраняем HTML-код в файл index.html
     fs.writeFile("index.html", htmlContent, err => {
         if (err) {
